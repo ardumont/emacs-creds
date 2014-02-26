@@ -16,4 +16,5 @@ CLOSED: [2014-02-26 mer. 11:13]
 * DONE Continuous integration
 CLOSED: [2014-02-26 mer. 11:13]
 
-* Deploy on marmalade
+* DONE Deploy on marmalade
+CLOSED: [2014-02-26 mer. 11:26]
