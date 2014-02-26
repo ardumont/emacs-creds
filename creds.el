@@ -1,11 +1,14 @@
 ;;; creds.el --- a simple creds lib
 
 ;; Copyright (C) 2013
-;;   Free Software Foundation, Inc.
+;;   Antoine R. Dumont <eniotna.t AT gmail.com>
 
 ;; Author: Antoine R. Dumont <eniotna.t@gmail.com>
-;; Keywords: credentials
+;; Maintainer: Antoine R. Dumont <eniotna.t AT gmail.com>
 ;; Version: 0.2
+;; Package-Requires: ()
+;; Keywords: credentials
+;; URL: https://github.com/ardumont/emacs-creds
 
 ;; This file is not part of GNU Emacs.
 
