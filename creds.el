@@ -1,4 +1,4 @@
-;;; creds.el --- a simple creds lib
+;;; creds.el --- a simple parser credential file lib
 
 ;; Copyright (C) 2013
 ;;   Antoine R. Dumont <eniotna.t AT gmail.com>
