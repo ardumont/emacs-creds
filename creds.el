@@ -48,17 +48,17 @@
 (defun creds/get (data entry-name)
   "Return the data list for the line entry-name"
   (when data
-      (let* ((d     (car data))
-             (entry (cadr d)))
+      (let* ((d     (first data))
+             (entry (second d)))
         (if (equal entry entry-name)
             d
-          (creds/get (cdr data) entry-name)))))
+          (creds/get (rest data) entry-name)))))
 
 (defun creds/get-entry (data entry)
   "Given a data list, return the entry in that list"
   (when data
-      (let* ((k (car data))
-             (v (cadr data)))
+      (let* ((k (first data))
+             (v (second data)))
         (if (equal k entry)
             v
           (creds/get-entry (cddr data) entry)))))
