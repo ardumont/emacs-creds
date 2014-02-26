@@ -45,15 +45,6 @@
     (insert-file-contents filepath)
     (mapcar (lambda (l) (split-string l "[ ]+")) (split-string (buffer-string) "\n" t))))
 
-;; Here is the result
-;; (creds/read-lines "~/.authinfo")
-;; (("machine" "machine0" "port" "http" "login" "nouser" "password" "nopass")
-;;  ("machine" "machine1" "login" "some-login" "password" "some-pwd" "port" "993")
-;;  ("machine" "machine2" "login" "some-login" "port" "587" "password" "some-pwd")
-;;  ("machine" "jabber" "login" "some-login" "password" "some-pwd")
-;;  ("machine" "description" "name" "\"my" "name" "is\"" "blog" "some-blog" "mail" "some-mail"))
-;; (setq dat (creds/read-lines "~/.authinfo"))
-
 (defun creds/get (data entry-name)
   "Return the data list for the line entry-name"
   (when data
@@ -63,12 +54,6 @@
             d
           (creds/get (cdr data) entry-name)))))
 
-;; (creds/get dat "machine0")
-;; ("machine" "machine0" "port" "http" "login" "nouser" "password" "nopass")
-
-;; (creds/get dat "nil")
-;; nil
-
 (defun creds/get-entry (data entry)
   "Given a data list, return the entry in that list"
   (when data
@@ -77,16 +62,6 @@
         (if (equal k entry)
             v
           (creds/get-entry (cddr data) entry)))))
-
-;; (setq machine (creds/get dat "machine0"))
-;; (creds/get-entry machine "machine")
-;; "machine0"
-;; (creds/get-entry machine "port")
-;; "http"
-;; (creds/get-entry machine "login")
-;; "nouser"
-;; (creds/get-entry machine "password")
-;; "nopass"
 
 (provide 'creds)
 
