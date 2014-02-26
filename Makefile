@@ -1,3 +1,9 @@
+init:
+	cask init
+
+deps:
+	cask
+
 tests:
 	cask exec emacs -Q -batch \
 			-l ert \
