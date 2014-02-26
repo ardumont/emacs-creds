@@ -4,7 +4,7 @@ init:
 deps:
 	cask
 
-tests:
+test:
 	cask exec emacs -Q -batch \
 			-l ert \
 			-l ./launch-tests.el \
