@@ -1,5 +1,7 @@
 (source melpa)
 
+(package-file "creds.el")
+
 (development
  (depends-on "ecukes")
  (depends-on "espuds")

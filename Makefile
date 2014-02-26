@@ -9,3 +9,6 @@ tests:
 			-l ert \
 			-l ./launch-tests.el \
 			-f ert-run-tests-batch-and-exit
+
+package:
+	cask package
