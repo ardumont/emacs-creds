@@ -1,0 +1,19 @@
+#+title: Dashboard
+#+author: ardumont
+
+* DONE Make a git repository
+CLOSED: [2014-02-26 mer. 11:13]
+
+* DONE Extract creds.el
+CLOSED: [2014-02-26 mer. 11:13]
+
+* DONE Create tests
+CLOSED: [2014-02-26 mer. 11:13]
+
+* DONE Package
+CLOSED: [2014-02-26 mer. 11:13]
+
+* DONE Continuous integration
+CLOSED: [2014-02-26 mer. 11:13]
+
+* Deploy on marmalade
