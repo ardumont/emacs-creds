@@ -6,6 +6,12 @@ USER=ardumont
 pr:
 	hub pull-request -b ardumont:master
 
+clean-dist:
+	rm -rf dist/
+
+clean: clean-dist
+	rm -rf *.tar
+
 init:
 	cask init
 
@@ -28,9 +34,9 @@ prepare:
 	mkdir -p $(PACKAGE_FOLDER)
 	cp -r creds.el creds-pkg.el $(PACKAGE_FOLDER)
 
-package: clean pkg-el prepare
-	tar cvf $(ARCHIVE) $(PACKAGE_FOLDER)
-	rm -rf $(PACKAGE_FOLDER)
+package: clean pkg-el
+	cp dist/$(ARCHIVE) .
+	make clean-dist
 
 release:
 	./release.sh $(VERSION) $(USER)

@@ -2,6 +2,8 @@
 
 (package-file "creds.el")
 
+(files "creds.el" "creds-pkg.el")
+
 (development
  (depends-on "ecukes")
  (depends-on "espuds")
