@@ -24,10 +24,13 @@ test:
 			-l ./launch-tests.el \
 			-f ert-run-tests-batch-and-exit
 
+pkg-file:
+	cask pkg-file
+
 pkg-el:
 	cask package
 
-package: clean pkg-el
+package: clean pkg-file pkg-el
 	cp dist/$(ARCHIVE) .
 	make clean-dist
 
