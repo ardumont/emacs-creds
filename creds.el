@@ -27,8 +27,6 @@
 
 ;;; Commentary:
 
-;;; Code:
-
 ;; A small authinfo/netrc parsing library to deal with more entries than just credentials (as in netrc library)
 ;;
 ;; Here is an example of .authinfo
@@ -57,6 +55,8 @@
 ;; To retrieve the value from the key in an entry line
 ;; (creds/get-entry '("machine" "machine2" "login" "some-login" "port" "587" "password" "some-pwd") "login")
 ;; > "some-login"
+
+;;; Code:
 
 (require 'dash)
 
