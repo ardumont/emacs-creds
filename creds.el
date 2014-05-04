@@ -64,14 +64,12 @@
   "Return the data list for the line entry-name"
   (creds/get-with data `(("machine" . ,entry-name))))
 
-(defun creds/get-entry (data entry)
+(defun creds/get-entry (data entry-key)
   "Given a data list, return the entry in that list"
   (when data
-    (let* ((k (car data))
-           (v (cadr data)))
-      (if (equal k entry)
-          v
-        (creds/get-entry (cddr data) entry)))))
+    (let ((data-as-alist (-partition 2 data)))
+      (-when-let (value (assoc-default entry-key data-as-alist))
+        (car value)))))
 
 (provide 'creds)
 
