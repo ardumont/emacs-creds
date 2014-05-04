@@ -1,3 +1,9 @@
+# 0.0.5
+
+- [X] Add new means to retrieve needed information with multiple key/value
+- [X] Update manual
+- [X] Refactor
+
 # 0.0.4
 
 - [X] Add release notes
