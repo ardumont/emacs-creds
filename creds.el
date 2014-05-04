@@ -42,13 +42,13 @@
 (require 'dash)
 
 (defun creds/read-lines (filepath)
-  "Return a list of lines from a file."
+  "Return a list of lines from a file FILEPATH."
   (with-temp-buffer
     (insert-file-contents filepath)
     (--map (split-string it "[ ]+") (split-string (buffer-string) "\n" t))))
 
 (defun creds/get-with (data key-value-pairs)
-  "Return the data list for the list key-value-pairs of associations."
+  "Return the DATA list for the list KEY-VALUE-PAIRS of associations."
   (when data
     (let ((entry-line-as-alist (-partition 2 (car data))))
       (if (->> key-value-pairs
@@ -61,11 +61,11 @@
         (creds/get-with (cdr data) key-value-pairs)))))
 
 (defun creds/get (data entry-name)
-  "Return the data list for the line entry-name"
+  "Return the DATA list for the line ENTRY-NAME."
   (creds/get-with data `(("machine" . ,entry-name))))
 
 (defun creds/get-entry (data entry-key)
-  "Given a data list, return the entry in that list"
+  "Given a DATA list, return the ENTRY-KEY value in that list."
   (when data
     (let ((data-as-alist (-partition 2 data)))
       (-when-let (value (assoc-default entry-key data-as-alist))
