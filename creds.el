@@ -1,9 +1,9 @@
-;;; creds.el --- a simple parser credential file lib
+;;; creds.el --- a simple parser credentials file lib
 
 ;; Copyright (C) 2013
 ;;   Antoine R. Dumont <eniotna.t AT gmail.com>
 
-;; Author: Antoine R. Dumont <eniotna.t@gmail.com>
+;; Author: Antoine R. Dumont <eniotna.t AT gmail.com>
 ;; Maintainer: Antoine R. Dumont <eniotna.t AT gmail.com>
 ;; Version: 0.0.5
 ;; Package-Requires: ((dash "2.5.0"))
