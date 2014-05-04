@@ -10,7 +10,7 @@ clean-dist:
 	rm -rf dist/
 
 clean: clean-dist
-	rm -rf *.tar
+	rm -rf *.tar $(PACKAGE_FOLDER)
 
 init:
 	cask init
@@ -24,15 +24,8 @@ test:
 			-l ./launch-tests.el \
 			-f ert-run-tests-batch-and-exit
 
-clean:
-	rm -rf *.tar $(PACKAGE_FOLDER)
-
 pkg-el:
 	cask package
-
-prepare:
-	mkdir -p $(PACKAGE_FOLDER)
-	cp -r creds.el creds-pkg.el $(PACKAGE_FOLDER)
 
 package: clean pkg-el
 	cp dist/$(ARCHIVE) .
