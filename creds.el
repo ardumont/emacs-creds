@@ -5,8 +5,8 @@
 
 ;; Author: Antoine R. Dumont <eniotna.t@gmail.com>
 ;; Maintainer: Antoine R. Dumont <eniotna.t AT gmail.com>
-;; Version: 0.0.4
-;; Package-Requires: ()
+;; Version: 0.0.5
+;; Package-Requires: ((dash "2.5.0"))
 ;; Keywords: credentials
 ;; URL: https://github.com/ardumont/emacs-creds
 
@@ -29,39 +29,66 @@
 
 ;;; Code:
 
-;; A small library (non optimal) to deal with more entries than just credentials
-;; (The search is linear so not optimal)
-
+;; A small authinfo/netrc parsing library to deal with more entries than just credentials (as in netrc library)
+;;
 ;; Here is an example of .authinfo
 ;; machine machine0 port http login nouser password nopass
 ;; machine machine1 login some-login password some-pwd port 993
 ;; machine machine2 login some-login port 587 password some-pwd
-;; machine jabber         login some-login password some-pwd
-;; machine description    name "my name is" blog some-blog mail some-mail
+;; machine jabber   login some-login password some-pwd
+;; machine description  name "my name is" blog some-blog mail some-mail
+;;
+;; Read the content of the file and return an alist:
+;; (creds/read-lines "~/.authinfo")
+;; > (("machine" "machine0" "port" "http" "login" "nouser" "password" "nopass")
+;;    ("machine" "machine1" "login" "some-login" "password" "some-pwd" "port" "993")
+;;    ("machine" "machine2" "login" "some-login" "port" "587" "password" "some-pwd")
+;;    ("machine" "jabber" "login" "some-login" "password" "some-pwd")
+;;    ("machine" "description" "name" "\"my name is\"" "blog" "some-blog" "mail" "some-mail"))
+
+;; To retrieve the machine entry:
+;; (creds/get data "machine1")
+;; > ("machine" "machine1" "login" "some-login" "password" "some-pwd" "port" "993")
+
+;; To retrieve the machine entry "machine2" with login "some-login"
+;; (creds/get data '(("machine" . "machine2") ("login" . "some-login")))
+;; > ("machine" "machine2" "login" "some-login" "port" "587" "password" "some-pwd")
+
+;; To retrieve the value from the key in an entry line
+;; (creds/get-entry '("machine" "machine2" "login" "some-login" "port" "587" "password" "some-pwd") "login")
+;; > "some-login"
+
+(require 'dash)
 
 (defun creds/read-lines (filepath)
-  "Return a list of lines from a file."
+  "Return a list of lines from a file FILEPATH."
   (with-temp-buffer
     (insert-file-contents filepath)
-    (mapcar (lambda (l) (split-string l "[ ]+")) (split-string (buffer-string) "\n" t))))
+    (--map (split-string it "[ ]+") (split-string (buffer-string) "\n" t))))
+
+(defun creds/get-with (data key-value-pairs)
+  "Return the DATA list for the list KEY-VALUE-PAIRS of associations."
+  (when data
+    (let ((entry-line-as-alist (-partition 2 (car data))))
+      (if (->> key-value-pairs
+            (mapcar (lambda (key-value)
+                      (let ((key   (car key-value))
+                            (value (cdr key-value)))
+                        (string= value (car (assoc-default key entry-line-as-alist))))))
+            (--all? (equal t it)))
+          (--mapcat it entry-line-as-alist)
+        (creds/get-with (cdr data) key-value-pairs)))))
 
 (defun creds/get (data entry-name)
-  "Return the data list for the line entry-name"
-  (when data
-      (let* ((d     (first data))
-             (entry (second d)))
-        (if (equal entry entry-name)
-            d
-          (creds/get (rest data) entry-name)))))
+  "Return the DATA list for the line ENTRY-NAME."
+  (creds/get-with data `(("machine" . ,entry-name))))
 
-(defun creds/get-entry (data entry)
-  "Given a data list, return the entry in that list"
+(defun creds/get-entry (data entry-key)
+  "Given a DATA list, return the ENTRY-KEY value in that list."
   (when data
-      (let* ((k (first data))
-             (v (second data)))
-        (if (equal k entry)
-            v
-          (creds/get-entry (cddr data) entry)))))
+    (let ((data-as-alist (-partition 2 data)))
+      (-when-let (value (assoc-default entry-key data-as-alist))
+        (car value)))))
 
 (provide 'creds)
 

@@ -3,6 +3,9 @@ PACKAGE_FOLDER=creds-$(VERSION)
 ARCHIVE=$(PACKAGE_FOLDER).tar
 USER=ardumont
 
+pr:
+	hub pull-request -b ardumont:master
+
 init:
 	cask init
 
