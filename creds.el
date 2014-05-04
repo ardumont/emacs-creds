@@ -47,14 +47,22 @@
     (insert-file-contents filepath)
     (--map (split-string it "[ ]+") (split-string (buffer-string) "\n" t))))
 
+(defun creds/get-with (data key-value-pairs)
+  "Return the data list for the list key-value-pairs of associations."
+  (when data
+    (let ((entry-line-as-alist (-partition 2 (car data))))
+      (if (->> key-value-pairs
+            (mapcar (lambda (key-value)
+                      (let ((key   (car key-value))
+                            (value (cdr key-value)))
+                        (string= value (car (assoc-default key entry-line-as-alist))))))
+            (--all? (equal t it)))
+          (--mapcat it entry-line-as-alist)
+        (creds/get-with (cdr data) key-value-pairs)))))
+
 (defun creds/get (data entry-name)
   "Return the data list for the line entry-name"
-  (when data
-    (let* ((d     (car data))
-           (entry (cadr d)))
-      (if (equal entry entry-name)
-          d
-        (creds/get (rest data) entry-name)))))
+  (creds/get-with data `(("machine" . ,entry-name))))
 
 (defun creds/get-entry (data entry)
   "Given a data list, return the entry in that list"
