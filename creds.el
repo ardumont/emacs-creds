@@ -1,11 +1,11 @@
-;;; creds.el --- a simple parser credential file lib
+;;; creds.el --- a simple parser credentials file lib
 
 ;; Copyright (C) 2013
 ;;   Antoine R. Dumont <eniotna.t AT gmail.com>
 
-;; Author: Antoine R. Dumont <eniotna.t@gmail.com>
+;; Author: Antoine R. Dumont <eniotna.t AT gmail.com>
 ;; Maintainer: Antoine R. Dumont <eniotna.t AT gmail.com>
-;; Version: 0.0.5
+;; Version: 0.0.5.1
 ;; Package-Requires: ((dash "2.5.0"))
 ;; Keywords: credentials
 ;; URL: https://github.com/ardumont/emacs-creds
@@ -26,8 +26,6 @@
 ;; along with GNU Emacs.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-
-;;; Code:
 
 ;; A small authinfo/netrc parsing library to deal with more entries than just credentials (as in netrc library)
 ;;
@@ -57,6 +55,8 @@
 ;; To retrieve the value from the key in an entry line
 ;; (creds/get-entry '("machine" "machine2" "login" "some-login" "port" "587" "password" "some-pwd") "login")
 ;; > "some-login"
+
+;;; Code:
 
 (require 'dash)
 

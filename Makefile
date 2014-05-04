@@ -6,6 +6,12 @@ USER=ardumont
 pr:
 	hub pull-request -b ardumont:master
 
+clean-dist:
+	rm -rf dist/
+
+clean: clean-dist
+	rm -rf *.tar $(PACKAGE_FOLDER)
+
 init:
 	cask init
 
@@ -18,19 +24,15 @@ test:
 			-l ./launch-tests.el \
 			-f ert-run-tests-batch-and-exit
 
-clean:
-	rm -rf *.tar $(PACKAGE_FOLDER)
+pkg-file:
+	cask pkg-file
 
 pkg-el:
 	cask package
 
-prepare:
-	mkdir -p $(PACKAGE_FOLDER)
-	cp -r creds.el creds-pkg.el $(PACKAGE_FOLDER)
-
-package: clean pkg-el prepare
-	tar cvf $(ARCHIVE) $(PACKAGE_FOLDER)
-	rm -rf $(PACKAGE_FOLDER)
+package: clean pkg-file pkg-el
+	cp dist/$(ARCHIVE) .
+	make clean-dist
 
 release:
 	./release.sh $(VERSION) $(USER)
