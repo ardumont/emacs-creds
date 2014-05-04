@@ -1,3 +1,8 @@
+# 0.0.5.1
+
+- [X] Fix release procedure
+- [X] Fix last release failure (forget to make the package)
+
 # 0.0.5
 
 - [X] Add new means to retrieve needed information with multiple key/value
