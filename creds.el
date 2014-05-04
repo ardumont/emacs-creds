@@ -6,7 +6,7 @@
 ;; Author: Antoine R. Dumont <eniotna.t@gmail.com>
 ;; Maintainer: Antoine R. Dumont <eniotna.t AT gmail.com>
 ;; Version: 0.0.4
-;; Package-Requires: ()
+;; Package-Requires: ((dash "2.5.0"))
 ;; Keywords: credentials
 ;; URL: https://github.com/ardumont/emacs-creds
 
@@ -39,11 +39,13 @@
 ;; machine jabber         login some-login password some-pwd
 ;; machine description    name "my name is" blog some-blog mail some-mail
 
+(require 'dash)
+
 (defun creds/read-lines (filepath)
   "Return a list of lines from a file."
   (with-temp-buffer
     (insert-file-contents filepath)
-    (mapcar (lambda (l) (split-string l "[ ]+")) (split-string (buffer-string) "\n" t))))
+    (--map (split-string it "[ ]+") (split-string (buffer-string) "\n" t))))
 
 (defun creds/get (data entry-name)
   "Return the data list for the line entry-name"
