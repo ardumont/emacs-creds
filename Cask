@@ -2,7 +2,7 @@
 
 (package-file "creds.el")
 
-(files "creds.el" "creds-pkg.el")
+(files "creds.el" "creds-pkg.el" "dist/creds-readme.txt")
 
 (development
  (depends-on "ecukes")
