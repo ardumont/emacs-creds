@@ -1,20 +1,32 @@
 #+title: Dashboard
 #+author: ardumont
 
-* DONE Make a git repository
+* DONE 0.0.6 [100%]
+CLOSED: [2014-05-07 Wed 21:07]
+- [X] Add 's dependency
+- [X] Fix bug regarding passwords entry with blank characters
+- [X] Update version
+- [X] Release notes
+* DONE 0.0.5.1
+* DONE 0.0.5
+* DONE 0.0.4
+* DONE 0.0.3
+* DONE 0.0.2
+* DONE 0.0.1
+- [X] Make a git repository
 CLOSED: [2014-02-26 mer. 11:13]
 
-* DONE Extract creds.el
+- [X] Extract creds.el
 CLOSED: [2014-02-26 mer. 11:13]
 
-* DONE Create tests
+- [X] Create tests
 CLOSED: [2014-02-26 mer. 11:13]
 
-* DONE Package
+- [X] Package
 CLOSED: [2014-02-26 mer. 11:13]
 
-* DONE Continuous integration
+- [X] Continuous integration
 CLOSED: [2014-02-26 mer. 11:13]
 
-* DONE Deploy on marmalade
+- [X] Deploy on marmalade
 CLOSED: [2014-02-26 mer. 11:26]

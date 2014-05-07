@@ -4,6 +4,36 @@
 
 (require 'creds)
 
+;; store a dummy file
+(with-temp-file "/tmp/temporary-authinfo"
+  (insert "machine machine1 port 993 login some-login password some-password\n")
+  (insert "machine machine2 port 888 login some-other-login password \"one spaced password\""))
+
+(expectations
+ (expect (format "some%sstring%swith%sblanks" *creds/protection-string-against-blank-char*
+                 *creds/protection-string-against-blank-char*
+                 *creds/protection-string-against-blank-char*
+                 *creds/protection-string-against-blank-char*)
+   (creds/--protect-blank-spaced-words "\"some string with blanks\"")))
+
+(expectations
+  (expect "some string with blanks"
+    (creds/--unprotect-blank-spaced-words (format "some%sstring%swith%sblanks" *creds/protection-string-against-blank-char*
+                                                  *creds/protection-string-against-blank-char*
+                                                  *creds/protection-string-against-blank-char*
+                                                  *creds/protection-string-against-blank-char*))))
+
+(expectations
+ (expect "machine machine1 port 993 login some-login password some-password
+machine machine2 port 888 login some-other-login password one@#$~!!~$#@spaced@#$~!!~$#@password"
+         (creds/--read-and-protect-content-file "/tmp/temporary-authinfo")))
+
+(expectations
+ (expect
+  '(("machine" "machine1" "port" "993" "login" "some-login" "password" "some-password")
+    ("machine" "machine2" "port" "888" "login" "some-other-login" "password" "one spaced password"))
+  (creds/read-lines "/tmp/temporary-authinfo")))
+
 (setq dat '(("machine" "machine0" "port" "http" "login" "nouser" "password" "nopass")
             ("machine" "machine1" "login" "some-login" "password" "some-pwd" "port" "993")
             ("machine" "machine2" "login" "some-login" "port" "587" "password" "some-pwd")

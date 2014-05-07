@@ -5,8 +5,8 @@
 
 ;; Author: Antoine R. Dumont <eniotna.t AT gmail.com>
 ;; Maintainer: Antoine R. Dumont <eniotna.t AT gmail.com>
-;; Version: 0.0.5.1
-;; Package-Requires: ((dash "2.5.0"))
+;; Version: 0.0.6
+;; Package-Requires: ((dash "2.5.0") (s "1.9.0"))
 ;; Keywords: credentials
 ;; URL: https://github.com/ardumont/emacs-creds
 
@@ -59,12 +59,37 @@
 ;;; Code:
 
 (require 'dash)
+(require 's)
+
+(defvar *creds/protection-string-against-blank-char* "@#$~!!~$#@" "A string to replace blank space.")
+
+(defun creds/--protect-blank-spaced-words (s)
+  "Protect the string S by removing blank space and \"."
+  (->> s
+    (replace-regexp-in-string " " *creds/protection-string-against-blank-char*)
+    (replace-regexp-in-string "\"" "")))
+
+(defun creds/--unprotect-blank-spaced-words (s)
+  "Unprotectd the string S by replacing the protected characters by blank space."
+  (replace-regexp-in-string *creds/protection-string-against-blank-char* " " s))
+
+(defun creds/--read-and-protect-content-file (filepath)
+  "Given a file FILEPATH, return the contents of such file with potential blank spaced word protected."
+  (with-temp-buffer
+    (insert-file-contents filepath)
+    (goto-char (point-min))
+    (while (re-search-forward "\".*\"" nil t)
+      (let ((string-to-replace (-> (match-string-no-properties 0) creds/--protect-blank-spaced-words)))
+        (replace-match string-to-replace nil t)))
+    (buffer-string)))
 
 (defun creds/read-lines (filepath)
   "Return a list of lines from a file FILEPATH."
-  (with-temp-buffer
-    (insert-file-contents filepath)
-    (--map (split-string it "[ ]+") (split-string (buffer-string) "\n" t))))
+  (->> filepath
+    creds/--read-and-protect-content-file
+    s-lines
+    (--map (let ((protected-words (s-split " " it)))
+             (mapcar #'creds/--unprotect-blank-spaced-words protected-words)))))
 
 (defun creds/get-with (data key-value-pairs)
   "Return the DATA list for the list KEY-VALUE-PAIRS of associations."
