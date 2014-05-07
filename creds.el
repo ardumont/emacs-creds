@@ -5,7 +5,7 @@
 
 ;; Author: Antoine R. Dumont <eniotna.t AT gmail.com>
 ;; Maintainer: Antoine R. Dumont <eniotna.t AT gmail.com>
-;; Version: 0.0.5.1
+;; Version: 0.0.6
 ;; Package-Requires: ((dash "2.5.0") (s "1.9.0"))
 ;; Keywords: credentials
 ;; URL: https://github.com/ardumont/emacs-creds
