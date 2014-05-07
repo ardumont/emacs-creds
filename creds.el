@@ -6,7 +6,7 @@
 ;; Author: Antoine R. Dumont <eniotna.t AT gmail.com>
 ;; Maintainer: Antoine R. Dumont <eniotna.t AT gmail.com>
 ;; Version: 0.0.5.1
-;; Package-Requires: ((dash "2.5.0"))
+;; Package-Requires: ((dash "2.5.0") (s "1.9.0"))
 ;; Keywords: credentials
 ;; URL: https://github.com/ardumont/emacs-creds
 
@@ -59,6 +59,7 @@
 ;;; Code:
 
 (require 'dash)
+(require 's)
 
 (defun creds/read-lines (filepath)
   "Return a list of lines from a file FILEPATH."

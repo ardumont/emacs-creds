@@ -1,8 +1,8 @@
 #+title: Dashboard
 #+author: ardumont
 
-* TODO 0.0.6 [0%]
-- [ ] Add 's dependency
+* TODO 0.0.6 [33%]
+- [X] Add 's dependency
 - [ ] Fix bug regarding passwords entry with blank characters
 - [ ] Update version
 * DONE 0.0.5.1
