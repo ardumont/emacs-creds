@@ -1,11 +1,11 @@
 #+title: Dashboard
 #+author: ardumont
 
-* IN-PROGRESS 0.0.6 [75%]
+* IN-PROGRESS 0.0.6 [100%]
 - [X] Add 's dependency
 - [X] Fix bug regarding passwords entry with blank characters
 - [X] Update version
-- [ ] Release notes
+- [X] Release notes
 * DONE 0.0.5.1
 * DONE 0.0.5
 * DONE 0.0.4

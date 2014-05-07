@@ -1,3 +1,10 @@
+# 0.0.6
+
+- [X] Add 's dependency
+- [X] Fix bug regarding passwords entry with blank characters
+- [X] Update version
+- [X] Release notes
+
 # 0.0.5.1
 
 - [X] Fix release procedure
