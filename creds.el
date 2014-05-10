@@ -1,11 +1,11 @@
-;;; creds.el --- a simple parser credentials file lib
+;;; creds.el --- A parser credentials file library (not limited to credentials entries)
 
 ;; Copyright (C) 2013
 ;;   Antoine R. Dumont <eniotna.t AT gmail.com>
 
 ;; Author: Antoine R. Dumont <eniotna.t AT gmail.com>
 ;; Maintainer: Antoine R. Dumont <eniotna.t AT gmail.com>
-;; Version: 0.0.6
+;; Version: 0.0.6.1
 ;; Package-Requires: ((dash "2.5.0") (s "1.9.0"))
 ;; Keywords: credentials
 ;; URL: https://github.com/ardumont/emacs-creds
@@ -27,14 +27,14 @@
 
 ;;; Commentary:
 
-;; A small authinfo/netrc parsing library to deal with more entries than just credentials (as in netrc library)
+;; A small authinfo/netrc parsing library to deal with more entries than just the default credentials (as in netrc library)
 ;;
 ;; Here is an example of .authinfo
 ;; machine machine0 port http login nouser password nopass
 ;; machine machine1 login some-login password some-pwd port 993
 ;; machine machine2 login some-login port 587 password some-pwd
 ;; machine jabber   login some-login password some-pwd
-;; machine description  name "my name is" blog some-blog mail some-mail
+;; machine description name "my name is" blog some-blog mail some-mail
 ;;
 ;; Read the content of the file and return an alist:
 ;; (creds/read-lines "~/.authinfo")
@@ -49,7 +49,7 @@
 ;; > ("machine" "machine1" "login" "some-login" "password" "some-pwd" "port" "993")
 
 ;; To retrieve the machine entry "machine2" with login "some-login"
-;; (creds/get data '(("machine" . "machine2") ("login" . "some-login")))
+;; (creds/get-with data '(("machine" . "machine2") ("login" . "some-login")))
 ;; > ("machine" "machine2" "login" "some-login" "port" "587" "password" "some-pwd")
 
 ;; To retrieve the value from the key in an entry line
@@ -65,20 +65,20 @@
 
 (defun creds/--protect-blank-spaced-words (s)
   "Protect the string S by removing blank space and \"."
-  (->> s
-    (replace-regexp-in-string " " *creds/protection-string-against-blank-char*)
-    (replace-regexp-in-string "\"" "")))
+  (replace-regexp-in-string " " *creds/protection-string-against-blank-char* s))
 
 (defun creds/--unprotect-blank-spaced-words (s)
   "Unprotectd the string S by replacing the protected characters by blank space."
-  (replace-regexp-in-string *creds/protection-string-against-blank-char* " " s))
+  (->> s
+    (replace-regexp-in-string *creds/protection-string-against-blank-char* " ")
+    (replace-regexp-in-string "\"" "")))
 
 (defun creds/--read-and-protect-content-file (filepath)
   "Given a file FILEPATH, return the contents of such file with potential blank spaced word protected."
   (with-temp-buffer
     (insert-file-contents filepath)
     (goto-char (point-min))
-    (while (re-search-forward "\".*\"" nil t)
+    (while (re-search-forward "\"[^\"]*\"" nil t)
       (let ((string-to-replace (-> (match-string-no-properties 0) creds/--protect-blank-spaced-words)))
         (replace-match string-to-replace nil t)))
     (buffer-string)))

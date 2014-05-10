@@ -1,3 +1,9 @@
+# 0.0.6.1
+
+- [X] Fix error when dealing with multiple entries with white spaces.
+- [X] Update version
+- [X] Release notes
+
 # 0.0.6
 
 - [X] Add 's dependency
