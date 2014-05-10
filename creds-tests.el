@@ -11,7 +11,7 @@
 
 (expectations
  (desc "creds/--protect-blank-spaced-words")
- (expect (format "some%sstring%swith%sblanks" *creds/protection-string-against-blank-char*
+ (expect (format "\"some%sstring%swith%sblanks\"" *creds/protection-string-against-blank-char*
                  *creds/protection-string-against-blank-char*
                  *creds/protection-string-against-blank-char*
                  *creds/protection-string-against-blank-char*)
@@ -20,7 +20,7 @@
 (expectations
  (desc "creds/--unprotect-blank-spaced-words")
  (expect "some string with blanks"
-         (creds/--unprotect-blank-spaced-words (format "some%sstring%swith%sblanks" *creds/protection-string-against-blank-char*
+         (creds/--unprotect-blank-spaced-words (format "\"some%sstring%swith%sblanks\"" *creds/protection-string-against-blank-char*
                                                        *creds/protection-string-against-blank-char*
                                                        *creds/protection-string-against-blank-char*
                                                        *creds/protection-string-against-blank-char*))))
@@ -28,7 +28,7 @@
 (expectations
  (desc "creds/--read-and-protect-content-file")
  (expect "machine machine1 port 993 login some-login password some-password
-machine machine2 port 888 login some-other-login password one@#$~!!~$#@spaced@#$~!!~$#@password"
+machine machine2 port 888 login some-other-login password \"one@#$~!!~$#@spaced@#$~!!~$#@password\""
          (creds/--read-and-protect-content-file "/tmp/temporary-authinfo")))
 
 (expectations
@@ -37,6 +37,28 @@ machine machine2 port 888 login some-other-login password one@#$~!!~$#@spaced@#$
   '(("machine" "machine1" "port" "993" "login" "some-login" "password" "some-password")
     ("machine" "machine2" "port" "888" "login" "some-other-login" "password" "one spaced password"))
   (creds/read-lines "/tmp/temporary-authinfo")))
+
+;; another edge case
+
+(with-temp-file "/tmp/temporary-authinfo2"
+  (insert "machine email-description mail some-email surname some-surname x-url some-url mail-host some-mail-host signature-file \"/path/to/some signature file\" smtp-server some-smtp-server draft-folder \"/[Gmail].Drafts\" sent-folder \"/[Gmail].Sent Mail\" trash-folder \"/[Gmail].Trash\" archive-folder \"/[Gmail].All Mail\" attachment-folder \"~/Downloads\""))
+
+(expectations
+ (desc "creds/read-lines - edge case")
+ (expect
+  '(("machine" "email-description"
+     "mail" "some-email"
+     "surname" "some-surname"
+     "x-url" "some-url"
+     "mail-host" "some-mail-host"
+     "signature-file" "/path/to/some signature file"
+     "smtp-server" "some-smtp-server"
+     "draft-folder" "/[Gmail].Drafts"
+     "sent-folder" "/[Gmail].Sent Mail"
+     "trash-folder" "/[Gmail].Trash"
+     "archive-folder" "/[Gmail].All Mail"
+     "attachment-folder" "~/Downloads"))
+  (creds/read-lines "/tmp/temporary-authinfo2")))
 
 (setq dat '(("machine" "machine0" "port" "http" "login" "nouser" "password" "nopass")
             ("machine" "machine1" "login" "some-login" "password" "some-pwd" "port" "993")

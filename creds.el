@@ -65,20 +65,20 @@
 
 (defun creds/--protect-blank-spaced-words (s)
   "Protect the string S by removing blank space and \"."
-  (->> s
-    (replace-regexp-in-string " " *creds/protection-string-against-blank-char*)
-    (replace-regexp-in-string "\"" "")))
+  (replace-regexp-in-string " " *creds/protection-string-against-blank-char* s))
 
 (defun creds/--unprotect-blank-spaced-words (s)
   "Unprotectd the string S by replacing the protected characters by blank space."
-  (replace-regexp-in-string *creds/protection-string-against-blank-char* " " s))
+  (->> s
+    (replace-regexp-in-string *creds/protection-string-against-blank-char* " ")
+    (replace-regexp-in-string "\"" "")))
 
 (defun creds/--read-and-protect-content-file (filepath)
   "Given a file FILEPATH, return the contents of such file with potential blank spaced word protected."
   (with-temp-buffer
     (insert-file-contents filepath)
     (goto-char (point-min))
-    (while (re-search-forward "\".*\"" nil t)
+    (while (re-search-forward "\"[^\"]*\"" nil t)
       (let ((string-to-replace (-> (match-string-no-properties 0) creds/--protect-blank-spaced-words)))
         (replace-match string-to-replace nil t)))
     (buffer-string)))
