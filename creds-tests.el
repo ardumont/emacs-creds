@@ -10,6 +10,7 @@
   (insert "machine machine2 port 888 login some-other-login password \"one spaced password\""))
 
 (expectations
+ (desc "creds/--protect-blank-spaced-words")
  (expect (format "some%sstring%swith%sblanks" *creds/protection-string-against-blank-char*
                  *creds/protection-string-against-blank-char*
                  *creds/protection-string-against-blank-char*
@@ -17,18 +18,21 @@
    (creds/--protect-blank-spaced-words "\"some string with blanks\"")))
 
 (expectations
-  (expect "some string with blanks"
-    (creds/--unprotect-blank-spaced-words (format "some%sstring%swith%sblanks" *creds/protection-string-against-blank-char*
-                                                  *creds/protection-string-against-blank-char*
-                                                  *creds/protection-string-against-blank-char*
-                                                  *creds/protection-string-against-blank-char*))))
+ (desc "creds/--unprotect-blank-spaced-words")
+ (expect "some string with blanks"
+         (creds/--unprotect-blank-spaced-words (format "some%sstring%swith%sblanks" *creds/protection-string-against-blank-char*
+                                                       *creds/protection-string-against-blank-char*
+                                                       *creds/protection-string-against-blank-char*
+                                                       *creds/protection-string-against-blank-char*))))
 
 (expectations
+ (desc "creds/--read-and-protect-content-file")
  (expect "machine machine1 port 993 login some-login password some-password
 machine machine2 port 888 login some-other-login password one@#$~!!~$#@spaced@#$~!!~$#@password"
          (creds/--read-and-protect-content-file "/tmp/temporary-authinfo")))
 
 (expectations
+ (desc "creds/read-lines")
  (expect
   '(("machine" "machine1" "port" "993" "login" "some-login" "password" "some-password")
     ("machine" "machine2" "port" "888" "login" "some-other-login" "password" "one spaced password"))
@@ -40,7 +44,8 @@ machine machine2 port 888 login some-other-login password one@#$~!!~$#@spaced@#$
             ("machine" "jabber" "login" "some-login" "password" "some-pwd")
             ("machine" "description" "name" "\"my" "name" "is\"" "blog" "some-blog" "mail" "some-mail")))
 
-(expectations (desc "creds/get")
+(expectations
+ (desc "creds/get")
   (expect '("machine" "machine0" "port" "http" "login" "nouser" "password" "nopass")      (creds/get dat "machine0"))
   (expect '("machine" "machine1" "login" "some-login" "password" "some-pwd" "port" "993") (creds/get dat "machine1"))
   (expect nil                                                                             (creds/get dat "login"))
@@ -49,6 +54,7 @@ machine machine2 port 888 login some-other-login password one@#$~!!~$#@spaced@#$
   (expect nil                                                                             (creds/get nil nil)))
 
 (expectations
+ (desc "creds/get-with")
  (expect '("machine" "machine0" "port" "http" "login" "nouser" "password" "nopass")
          (creds/get-with dat '(("machine" . "machine0") ("login" . "nouser"))))
  (expect '("machine" "machine2" "login" "some-login" "port" "587" "password" "some-pwd")
