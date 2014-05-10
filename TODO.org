@@ -1,10 +1,10 @@
 #+title: Dashboard
 #+author: ardumont
 
-* IN-PROGRESS 0.0.6.1 [66%]
+* IN-PROGRESS 0.0.6.1 [100%]
 - [X] Fix error when dealing with multiple entries with white spaces.
 - [X] Update version
-- [ ] Release notes
+- [X] Release notes
 * DONE 0.0.6 [100%]
 CLOSED: [2014-05-07 Wed 21:07]
 - [X] Add 's dependency
